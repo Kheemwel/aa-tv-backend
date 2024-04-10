@@ -14,4 +14,9 @@ class MainLivewire extends Component
         $gameData = GameData::orderBy('date_time', 'desc')->get();
         return view('livewire.main-livewire', ['gameData' => $gameData]);
     }
+
+    public function delete($id)
+    {
+        GameData::find($id)->delete();
+    }
 }

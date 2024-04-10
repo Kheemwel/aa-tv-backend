@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Announcements;
 use App\Models\GameData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -14,6 +15,11 @@ class DataController extends Controller
             'id' => 123,
             'name' => 'Kim'
         ];
+    }
+
+    public function getAnnouncements()
+    {
+        return Announcements::all();
     }
 
     public function storeData(Request $request)
@@ -33,6 +39,21 @@ class DataController extends Controller
         $gameData->save();
 
         return response()->json(['message' => 'Game data saved successfully'], 200);
+    }
+
+    public function testGet()
+    {
+        // API token
+        $apiToken = 'e94061b3-bc9f-489d-99ce-ef9e8c9058ce';
+
+        // Make a POST request with JSON data and API token header
+        $response = Http::withHeaders([
+            'Authorization' => "Bearer $apiToken",
+            // 'Content-Type' => 'application/json',
+        ])->get(url('https://properly-immune-cattle.ngrok-free.app/api/get-announcements'));
+
+        // Display the response
+        dd($response->body());
     }
 
     public function testApiTokenMiddleware()

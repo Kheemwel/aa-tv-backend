@@ -11,17 +11,26 @@
     <title>{{ $title ?? 'Page Title' }}</title>
 
 
+    @livewireStyles()
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 
 <body>
-    <div class="flex-column container-fluid">
-        <div class="row">
-
-            @include('components.layouts.sidebar')
-            {{ $slot }}
-        </div>
+    <div class="d-flex vh-100">
+        @include('components.layouts.sidebar')
+        {{ $slot }}
     </div>
+
+    @livewireScripts()
+    <script>
+        Livewire.on('closeModals', () => {
+            const $modals = document.querySelectorAll('.modal')
+            $modals.forEach(modal => {
+                let currentModal = bootstrap.Modal.getInstance(modal)
+                if (currentModal) currentModal.hide()
+            })
+        });
+    </script>
 </body>
 
 </html>

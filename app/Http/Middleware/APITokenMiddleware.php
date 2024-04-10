@@ -10,6 +10,7 @@ class ApiTokenMiddleware
     const API_TOKEN = 'e94061b3-bc9f-489d-99ce-ef9e8c9058ce';
     public function handle($request, Closure $next)
     {
+        
         $apiToken = $request->bearerToken();
 
         if (!$apiToken) {

@@ -14,5 +14,8 @@
         "laravel-vite-plugin": "^1.0.2",
         "sass": "^1.56.1",
         "vite": "^5.2.7"
+    },
+    "dependencies": {
+        "jquery": "^3.7.1"
     }
 }
