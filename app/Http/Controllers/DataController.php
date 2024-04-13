@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Announcements;
 use App\Models\GameData;
+use App\Models\Videos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -19,7 +20,25 @@ class DataController extends Controller
 
     public function getAnnouncements()
     {
-        return Announcements::all();
+        return Announcements::latest()->get();
+    }
+
+    public function getVideos()
+    {
+        $result = [];
+        $videos = Videos::latest()->get();
+        foreach ($videos as $key) {
+            $result[] = [
+                'id' => $key->id,
+                'title' => $key->title,
+                'description' => $key->description,
+                'thumbnail' => "data:image;base64," . base64_encode($key->thumbnail),
+                'video' => "data:video;base64," . base64_encode($key->video),
+                'created_at' => $key->created_at,
+            ];
+        }
+
+        return $result;
     }
 
     public function storeData(Request $request)
@@ -49,11 +68,24 @@ class DataController extends Controller
         // Make a POST request with JSON data and API token header
         $response = Http::withHeaders([
             'Authorization' => "Bearer $apiToken",
-            // 'Content-Type' => 'application/json',
-        ])->get(url('https://properly-immune-cattle.ngrok-free.app/api/get-announcements'));
+        ])->get(url('https://android-tv.loca.lt/api/get-announcements'));
 
         // Display the response
-        dd($response->body());
+        return $response->json();
+    }
+
+    public function testVideos()
+    {
+        // API token
+        $apiToken = 'e94061b3-bc9f-489d-99ce-ef9e8c9058ce';
+
+        // Make a POST request with JSON data and API token header
+        $response = Http::withHeaders([
+            'Authorization' => "Bearer $apiToken",
+        ])->get(url('https://android-tv.loca.lt/api/get-videos'));
+
+        // Display the response
+        return $response->json();
     }
 
     public function testApiTokenMiddleware()
@@ -72,7 +104,7 @@ class DataController extends Controller
         $response = Http::withHeaders([
             'Authorization' => "Bearer $apiToken",
             'Content-Type' => 'application/json',
-        ])->post(url('http://android-tv.test/api/save-data'), $jsonData);
+        ])->post(url('https://android-tv.loca.lt/api/save-data'), $jsonData);
 
         // Display the response
         dd($response->status(), $response->json());

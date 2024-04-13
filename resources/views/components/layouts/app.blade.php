@@ -5,14 +5,9 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    {{-- This will allow bootstrap to be loaded in ngrok --}}
-    <meta content="upgrade-insecure-requests" http-equiv="Content-Security-Policy">
-
     <title>{{ $title ?? 'Page Title' }}</title>
-
-
-    @livewireStyles()
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    <script type="module" src="https://cdn.jsdelivr.net/npm/ldrs/dist/auto/dotSpinner.js"></script>
 </head>
 
 <body>
@@ -21,7 +16,6 @@
         {{ $slot }}
     </div>
 
-    @livewireScripts()
     <script>
         Livewire.on('closeModals', () => {
             const $modals = document.querySelectorAll('.modal')
@@ -29,6 +23,12 @@
                 let currentModal = bootstrap.Modal.getInstance(modal)
                 if (currentModal) currentModal.hide()
             })
+        });
+        Livewire.on('resetFileInputs', () => {
+            let fileInputs = document.querySelectorAll('input[type="file"]');
+            fileInputs.forEach(function(input) {
+                input.value = '';
+            });
         });
     </script>
 </body>

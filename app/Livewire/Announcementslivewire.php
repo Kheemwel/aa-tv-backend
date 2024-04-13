@@ -21,7 +21,7 @@ class Announcementslivewire extends Component
     {
         $validated = $this->validate([
             'title' => 'required|string',
-            'message' => 'required|string'
+            'message' => 'required|string',
         ]);
 
         Announcements::create($validated);
@@ -58,7 +58,7 @@ class Announcementslivewire extends Component
 
     public function resets()
     {
-        $this->reset('title', 'message');
+        $this->reset('title', 'message', 'selectedID');
         $this->resetErrorBag();
     }
 }
