@@ -23,7 +23,19 @@
                             Please enter description
                         </div>
                     </div>
-                    <div class="mb-3" x-data="{progress: 0 }" x-on:livewire-upload-error="thumbnailUpload = false" x-on:livewire-upload-finish="thumbnailUpload = false; progress = 0" x-on:livewire-upload-progress="progress = $event.detail.progress" x-on:livewire-upload-start="thumbnailUpload = true">
+                    <div class="mb-3">
+                        <label class="form-label" for="select-category">Category</label>
+                        <select class="form-select @error('video_category_id') is-invalid @enderror" wire:model='video_category_id'>
+                            <option disabled selected value="">Select Category</option>
+                            @foreach ($categories as $cat)
+                                <option value='{{ $cat->id }}'>{{ $cat->category_name }}</option>
+                            @endforeach
+                        </select>
+                        <div class="invalid-feedback">
+                            Please select category
+                        </div>
+                    </div>
+                    <div class="mb-3" x-data="{ progress: 0 }" x-on:livewire-upload-error="thumbnailUpload = false; progress = 0" x-on:livewire-upload-finish="thumbnailUpload = false; progress = 0" x-on:livewire-upload-progress="progress = $event.detail.progress" x-on:livewire-upload-start="thumbnailUpload = true">
                         <label class="form-label" for="upload-thumbnail">Thumbnail</label>
                         <input accept=".png, .jpg, .jpeg" class="form-control @error('thumbnail') is-invalid @enderror" type="file" wire:model='thumbnail'>
                         <div class="invalid-feedback">
@@ -36,7 +48,7 @@
                             <div aria-valuemax="100" aria-valuemin="0" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" x-bind:style="`width: ${progress}%;`" x-text="progress + '%'"></div>
                         </div>
                     </div>
-                    <div class="mb-3" x-data="{progress: 0 }" x-on:livewire-upload-error="videoUpload = false" x-on:livewire-upload-finish="videoUpload = false; progress = 0" x-on:livewire-upload-progress="progress = $event.detail.progress" x-on:livewire-upload-start="videoUpload = true">
+                    <div class="mb-3" x-data="{ progress: 0 }" x-on:livewire-upload-error="videoUpload = false; progress = 0" x-on:livewire-upload-finish="videoUpload = false; progress = 0" x-on:livewire-upload-progress="progress = $event.detail.progress" x-on:livewire-upload-start="videoUpload = true">
                         <label class="form-label" for="upload-video">Video</label>
                         <input accept=".mp4" class="form-control @error('video') is-invalid @enderror" id="upload-video" type="file" wire:model='video'>
                         <div class="invalid-feedback">

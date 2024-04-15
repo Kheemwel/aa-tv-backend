@@ -15,6 +15,7 @@ Route::middleware([ApiTokenMiddleware::class])->group(function () {
     Route::post('/save-data', [DataController::class, 'storeData']);
     Route::get('/get-announcements', [DataController::class, 'getAnnouncements']);
     Route::get('/get-videos', [DataController::class, 'getVideos']);
+    Route::get('/get-categories', [DataController::class, 'getCategories']);
 });
 
     

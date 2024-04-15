@@ -8,6 +8,7 @@
     <title>{{ $title ?? 'Page Title' }}</title>
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     <script type="module" src="https://cdn.jsdelivr.net/npm/ldrs/dist/auto/dotSpinner.js"></script>
+    @livewireStyles()
 </head>
 
 <body>
@@ -16,6 +17,7 @@
         {{ $slot }}
     </div>
 
+    @livewireScripts()
     <script>
         Livewire.on('closeModals', () => {
             const $modals = document.querySelectorAll('.modal')

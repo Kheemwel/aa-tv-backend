@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\VideoCategories;
 use App\Models\Videos;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -11,11 +12,17 @@ use Livewire\WithFileUploads;
 class VideosLivewire extends Component
 {
     use WithFileUploads;
-    public $title, $description, $thumbnail, $video;
-    public $selectedID;
+    public $title, $description, $thumbnail, $video, $video_category_id = '';
+    public $selectedID, $categories;
+
+    public function mount()
+    {
+        $this->categories = VideoCategories::all();
+    }
+
     public function render()
     {
-        $videos = Videos::latest()->select('id', 'title', 'description')->get();
+        $videos = Videos::latest()->select('id', 'title', 'description', 'video_category_id')->get();
         return view('livewire.videos.videos-livewire')->with('videos', $videos);
     }
 
@@ -25,7 +32,8 @@ class VideosLivewire extends Component
             'title' => 'required|string',
             'description' => 'required|string',
             'thumbnail' => 'required|mimetypes:image/png,image/jpg,image/jpeg|max:16000',
-            'video' => 'required|mimetypes:video/mp4|max:1000000'
+            'video' => 'required|mimetypes:video/mp4|max:1000000',
+            'video_category_id' => 'required|int'
         ], [
             'thumbnail.required' => 'Please upload image for thumbnail',
             'thumbnail.max' => 'Image must be less than 16MB',
@@ -39,7 +47,8 @@ class VideosLivewire extends Component
             'title' => $validated['title'],
             'description' => $validated['description'],
             'thumbnail' => $thumbnail_content,
-            'video' => $video_content
+            'video' => $video_content,
+            'video_category_id' => $validated['video_category_id']
         ]);
 
         $this->resets();
@@ -55,6 +64,7 @@ class VideosLivewire extends Component
         $this->description = $video->description;
         $this->thumbnail = "data:image;base64," . base64_encode($video->thumbnail);
         $this->video = "data:video;base64," . base64_encode($video->video);
+        $this->video_category_id = $video->video_category_id;
     }
 
     public function update()
@@ -68,7 +78,7 @@ class VideosLivewire extends Component
 
     public function resets()
     {
-        $this->reset('title', 'description', 'thumbnail', 'video', 'selectedID');
+        $this->reset('title', 'description', 'thumbnail', 'video', 'video_category_id', 'selectedID');
         $this->resetErrorBag();
         $this->dispatch('resetFileInputs');
     }

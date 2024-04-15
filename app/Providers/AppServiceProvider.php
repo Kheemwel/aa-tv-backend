@@ -31,6 +31,8 @@ class AppServiceProvider extends ServiceProvider
         } else {
             // For all other cases like local tunnel, default to https
             URL::forceScheme('https');
+            // To fix livewire file upload failed in localtunnel
+            request()->server->set('HTTPS', request()->header('X-Forwarded-Proto', 'https') == 'https' ? 'on' : 'off');
         }
     }
 

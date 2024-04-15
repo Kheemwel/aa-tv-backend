@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Announcements;
 use App\Models\GameData;
+use App\Models\VideoCategories;
 use App\Models\Videos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -23,6 +24,11 @@ class DataController extends Controller
         return Announcements::latest()->get();
     }
 
+    public function getCategories()
+    {
+        return VideoCategories::select('id', 'category_name')->get();
+    }
+
     public function getVideos()
     {
         $result = [];
@@ -34,6 +40,7 @@ class DataController extends Controller
                 'description' => $key->description,
                 'thumbnail' => "data:image;base64," . base64_encode($key->thumbnail),
                 'video' => "data:video;base64," . base64_encode($key->video),
+                'category' => $key->category_name,
                 'created_at' => $key->created_at,
             ];
         }
