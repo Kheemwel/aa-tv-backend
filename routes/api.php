@@ -3,6 +3,7 @@
 use App\Http\Controllers\DataController;
 use App\Http\Middleware\ApiTokenMiddleware;
 use App\Http\Middleware\CorsMiddleware;
+use App\Http\Middleware\FileAccessMiddleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,6 +17,11 @@ Route::middleware([ApiTokenMiddleware::class])->group(function () {
     Route::get('/get-announcements', [DataController::class, 'getAnnouncements']);
     Route::get('/get-videos', [DataController::class, 'getVideos']);
     Route::get('/get-categories', [DataController::class, 'getCategories']);
+});
+
+Route::middleware([FileAccessMiddleware::class])->group(function () {
+    Route::get('/images/{image}/{token}', [DataController::class, 'viewImage']);
+    Route::get('/videos/{video}/{token}', [DataController::class, 'viewVideo']);
 });
 
     

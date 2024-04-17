@@ -4,15 +4,19 @@ namespace App\Livewire;
 
 use App\Models\VideoCategories;
 use App\Models\Videos;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Illuminate\Support\Str;
 
 #[Title('Videos')]
 class VideosLivewire extends Component
 {
     use WithFileUploads;
-    public $title, $description, $thumbnail, $video, $video_category_id = '';
+    public $title, $description, $thumbnail, $video, $thumbnail_path, $video_path;
+    public $video_category_id = '';
     public $selectedID, $categories;
 
     public function mount()
@@ -22,8 +26,13 @@ class VideosLivewire extends Component
 
     public function render()
     {
-        $videos = Videos::latest()->select('id', 'title', 'description', 'video_category_id')->get();
+        $videos = Videos::latest()->get();
         return view('livewire.videos.videos-livewire')->with('videos', $videos);
+    }
+
+    public function rendered()
+    {
+        $this->dispatch('loadVideo');
     }
 
     public function add()
@@ -41,14 +50,14 @@ class VideosLivewire extends Component
             'video.max' => 'Video must be less than 1GB'
         ]);
 
-        $thumbnail_content = file_get_contents($validated['thumbnail']->getRealpath());
-        $video_content = file_get_contents($validated['video']->getRealpath());
+        $thumbnailPath = $this->thumbnail->storeAs('images', 'thumbnail--'.Str::random(50).'.'.$this->thumbnail->getClientOriginalExtension(), 'private');
+        $videoPath = $this->video->storeAs('videos', 'video--'.Str::random(50).'.'.$this->video->getClientOriginalExtension(), 'private');
         Videos::create([
             'title' => $validated['title'],
             'description' => $validated['description'],
-            'thumbnail' => $thumbnail_content,
-            'video' => $video_content,
-            'video_category_id' => $validated['video_category_id']
+            'video_category_id' => $validated['video_category_id'],
+            'thumbnail_path' => $thumbnailPath,
+            'video_path' => $videoPath,
         ]);
 
         $this->resets();
@@ -56,15 +65,16 @@ class VideosLivewire extends Component
 
     public function getData($id)
     {
+        $api_token = 'e94061b3-bc9f-489d-99ce-ef9e8c9058ce';
 
         $this->selectedID = $id;
 
         $video = Videos::find($id);
         $this->title = $video->title;
         $this->description = $video->description;
-        $this->thumbnail = "data:image;base64," . base64_encode($video->thumbnail);
-        $this->video = "data:video;base64," . base64_encode($video->video);
         $this->video_category_id = $video->video_category_id;
+        $this->thumbnail_path = $video->thumbnail_path.'/'.$api_token;
+        $this->video_path = $video->video_path.'/'.$api_token;
     }
 
     public function update()
@@ -73,12 +83,15 @@ class VideosLivewire extends Component
 
     public function delete($id)
     {
-        Videos::find($id)->delete();
+        $video = Videos::find($id);
+        $video->delete();
+        Storage::disk('private')->delete($video->thumbnail_path);
+        Storage::disk('private')->delete($video->video_path);
     }
 
     public function resets()
     {
-        $this->reset('title', 'description', 'thumbnail', 'video', 'video_category_id', 'selectedID');
+        $this->reset('title', 'description', 'thumbnail', 'video', 'video_category_id', 'selectedID', 'thumbnail_path', 'video_path');
         $this->resetErrorBag();
         $this->dispatch('resetFileInputs');
     }

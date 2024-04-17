@@ -8,6 +8,7 @@ use App\Models\VideoCategories;
 use App\Models\Videos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 
 class DataController extends Controller
 {
@@ -17,6 +18,38 @@ class DataController extends Controller
             'id' => 123,
             'name' => 'Kim'
         ];
+    }
+
+    public function viewImage($image, $token)
+    {
+        // Check if the token is valid
+        if ($token !== 'e94061b3-bc9f-489d-99ce-ef9e8c9058ce') {
+            abort(403, 'Unauthorized');
+        }
+
+        $path = 'images/' . $image;
+
+        if (!Storage::disk('private')->exists($path)) {
+            abort(404);
+        }
+
+        return Storage::response('private/'.$path);
+    }
+
+    public function viewVideo($video, $token)
+    {
+        // Check if the token is valid
+        if ($token !== 'e94061b3-bc9f-489d-99ce-ef9e8c9058ce') {
+            abort(403, 'Unauthorized');
+        }
+
+        $path = 'videos/' . $video;
+
+        if (!Storage::disk('private')->exists($path)) {
+            abort(404);
+        }
+
+        return Storage::response('private/'.$path);
     }
 
     public function getAnnouncements()
@@ -31,6 +64,7 @@ class DataController extends Controller
 
     public function getVideos()
     {
+        $apiToken = 'e94061b3-bc9f-489d-99ce-ef9e8c9058ce';
         $result = [];
         $videos = Videos::latest()->get();
         foreach ($videos as $key) {
@@ -38,8 +72,8 @@ class DataController extends Controller
                 'id' => $key->id,
                 'title' => $key->title,
                 'description' => $key->description,
-                'thumbnail' => "data:image;base64," . base64_encode($key->thumbnail),
-                'video' => "data:video;base64," . base64_encode($key->video),
+                'thumbnail_path' => url($key->thumbnail_path.'/'.$apiToken),
+                'video_path' => url($key->video_path.'/'.$apiToken),
                 'category' => $key->category_name,
                 'created_at' => $key->created_at,
             ];

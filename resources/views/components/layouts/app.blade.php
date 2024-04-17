@@ -5,20 +5,28 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>{{ $title ?? 'Page Title' }}</title>
+    <title>{{ $title ?? 'Flutter Backend' }}</title>
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-    <script type="module" src="https://cdn.jsdelivr.net/npm/ldrs/dist/auto/dotSpinner.js"></script>
+
+    {{-- CDN link for loader icon --}}
+    <script type="module" src="https://cdn.jsdelivr.net/npm/ldrs/dist/auto/ring.js"></script>
+
     @livewireStyles()
 </head>
 
 <body>
     <div class="d-flex vh-100">
+        {{-- Left navigation bar --}}
         @include('components.layouts.sidebar')
+
+        {{-- Main content --}}
         {{ $slot }}
     </div>
 
     @livewireScripts()
+    
     <script>
+        // Close all modals
         Livewire.on('closeModals', () => {
             const $modals = document.querySelectorAll('.modal')
             $modals.forEach(modal => {
@@ -26,6 +34,8 @@
                 if (currentModal) currentModal.hide()
             })
         });
+
+        // Reset file inputs
         Livewire.on('resetFileInputs', () => {
             let fileInputs = document.querySelectorAll('input[type="file"]');
             fileInputs.forEach(function(input) {
@@ -33,6 +43,8 @@
             });
         });
     </script>
+
+    @yield('scripts')
 </body>
 
 </html>

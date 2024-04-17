@@ -47,16 +47,13 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->longText('description');
-            $table->binary('thumbnail');
-            $table->binary('video');
+            $table->text('thumbnail_path');
+            $table->text('video_path');
             $table->foreignId('video_category_id')->constrained(
                 table: 'video_categories'
             );
             $table->timestamps();
         });
-
-        DB::statement("ALTER TABLE videos MODIFY thumbnail MEDIUMBLOB");
-        DB::statement("ALTER TABLE videos MODIFY video LONGBLOB");
     }
 
     /**

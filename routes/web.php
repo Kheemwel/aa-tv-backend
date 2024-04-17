@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DataController;
 use App\Http\Middleware\ApiTokenMiddleware;
+use App\Http\Middleware\FileAccessMiddleware;
 use App\Livewire\Announcementslivewire;
 use App\Livewire\EventsLivewire;
 use App\Livewire\MainLivewire;
@@ -24,7 +25,6 @@ Route::get('/test-videos', [DataController::class, 'testVideos']);
 
 Route::get('/test-categories', [DataController::class, 'getCategories']);
 
-
 Route::get('/test', [DataController::class, 'testApiTokenMiddleware']);
 
 Route::get('/fetch-data', function () {
@@ -32,4 +32,9 @@ Route::get('/fetch-data', function () {
         'id' => 123,
         'name' => 'Kim'
     ];
+});
+
+Route::middleware([FileAccessMiddleware::class])->group(function () {
+    Route::get('/images/{image}/{token}', [DataController::class, 'viewImage']);
+    Route::get('/videos/{video}/{token}', [DataController::class, 'viewVideo']);
 });

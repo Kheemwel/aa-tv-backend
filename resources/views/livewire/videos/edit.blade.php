@@ -1,24 +1,25 @@
-<div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="addModal" role="dialog" tabindex="-1" wire:ignore.self>
+<div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="editModal" role="dialog" tabindex="-1" wire:ignore.self>
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
         <div class="modal-content" x-data='{ thumbnailUpload: false, videoUpload: false}'>
             <div class="modal-header">
                 <h5 class="modal-title">
-                    Upload New Video
+                    Edit Video
                 </h5>
                 <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button" wire:click='resets()'></button>
             </div>
-            <div class="modal-body">
-                <form id='form-add' wire:submit.prevent='add()'>
+            <l-ring bg-opacity="0" class="align-self-center m-5" color="black" size="100" speed="2" stroke="10" wire:loading wire:target='getData'></l-ring>
+            <div class="modal-body" wire:loading.remove wire:target='getData'>
+                <form id='form-add' wire:submit.prevent='update()'>
                     <div class="mb-3">
-                        <label class="form-label" for="input-title">Title</label>
-                        <input class="form-control @error('title') is-invalid @enderror" id='input-title' type="text" wire:model='title'>
+                        <label class="form-label" for="edit-title">Title</label>
+                        <input class="form-control @error('title') is-invalid @enderror" id='edit-title' type="text" wire:model='title'>
                         <div class="invalid-feedback">
                             Please enter title
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label" for="input-description">Description</label>
-                        <textarea class="form-control @error('description') is-invalid @enderror" id='input-description' rows="5" wire:model='description'></textarea>
+                        <label class="form-label" for="edit-description">Description</label>
+                        <textarea class="form-control @error('description') is-invalid @enderror" id='edit-description' rows="5" wire:model='description'></textarea>
                         <div class="invalid-feedback">
                             Please enter description
                         </div>
@@ -36,8 +37,8 @@
                         </div>
                     </div>
                     <div class="mb-3" x-data="{ progress: 0 }" x-on:livewire-upload-error="thumbnailUpload = false; progress = 0" x-on:livewire-upload-finish="thumbnailUpload = false; progress = 0" x-on:livewire-upload-progress="progress = $event.detail.progress" x-on:livewire-upload-start="thumbnailUpload = true">
-                        <label class="form-label" for="upload-thumbnail">Thumbnail</label>
-                        <input accept=".png, .jpg, .jpeg" class="form-control @error('thumbnail') is-invalid @enderror" id="upload-thumbnail" type="file" wire:model='thumbnail'>
+                        <label class="form-label" for="edit-upload-thumbnail">Thumbnail</label>
+                        <input accept=".png, .jpg, .jpeg" class="form-control @error('thumbnail') is-invalid @enderror" id="edit-upload-thumbnail" type="file" wire:model='thumbnail'>
                         <div class="invalid-feedback">
                             @error('thumbnail')
                                 {{ $message }}
@@ -48,15 +49,13 @@
                             <div aria-valuemax="100" aria-valuemin="0" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" x-bind:style="`width: ${progress}%;`" x-text="progress + '%'"></div>
                         </div>
                     </div>
-                    @if ($thumbnail)
-                        <div class="mb-3 d-flex flex-column">
-                            <label class="form-label" for="preview-thumbnail">Thumbnail Preview:</label>
-                            <img class='img-thumbnail' height="200px" id='preview-thumbnail' src="{{ $thumbnail->temporaryUrl() }}" width="200px">
-                        </div>
-                    @endif
+                    <div class="mb-3 d-flex flex-column">
+                        <label class="form-label" for="preview-edit-thumbnail">Thumbnail Preview:</label>
+                        <img class='img-thumbnail' height="200px" id='preview-edit-thumbnail' src="{{ $thumbnail ? $thumbnail->temporaryUrl() : $thumbnail_path }}" width="200px">
+                    </div>
                     <div class="mb-3" x-data="{ progress: 0 }" x-on:livewire-upload-error="videoUpload = false; progress = 0" x-on:livewire-upload-finish="videoUpload = false; progress = 0" x-on:livewire-upload-progress="progress = $event.detail.progress" x-on:livewire-upload-start="videoUpload = true">
-                        <label class="form-label" for="upload-video">Video</label>
-                        <input accept=".mp4" class="form-control @error('video') is-invalid @enderror" id="upload-video" type="file" wire:model='video'>
+                        <label class="form-label" for="edit-upload-video">Video</label>
+                        <input accept=".mp4" class="form-control @error('video') is-invalid @enderror" id="edit-upload-video" type="file" wire:model='video'>
                         <div class="invalid-feedback">
                             @error('video')
                                 {{ $message }}
@@ -67,15 +66,20 @@
                             <div aria-valuemax="100" aria-valuemin="0" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" x-bind:style="`width: ${progress}%;`" x-text="progress + '%'"></div>
                         </div>
                     </div>
-                    @if ($video)
-                        <div class="mb-3 d-flex flex-column">
-                            <label class="form-label" for="preview-video">Video Preview:</label>
-                            <video controls height="200px" id="preview-video" width='300px' class="object-fit-cover border rounded">
+                    <div class="mb-3 d-flex flex-column">
+                        <label class="form-label" for="preview-edit-video">Video Preview:</label>
+                        @if ($video)
+                            <video class="object-fit-cover border rounded" controls height="200px" id="preview-edit-video" width='300px'>
                                 <source src="{{ $video->temporaryUrl() }}" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>
-                        </div>
-                    @endif
+                        @elseif($video_path)
+                            <video class="object-fit-cover border rounded" controls height="200px" id="preview-edit-video" width='300px'>
+                                <source src="{{ $video_path }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        @endif
+                    </div>
                 </form>
             </div>
             <div class="modal-footer justify-content-center">

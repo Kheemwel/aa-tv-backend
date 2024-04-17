@@ -7,7 +7,7 @@
                 </h5>
                 <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button" wire:click='resets()'></button>
             </div>
-            <l-dot-spinner class="align-self-center m-5" color="black" size="100" speed="0.9" wire:loading></l-dot-spinner>
+            <l-ring bg-opacity="0" class="align-self-center m-5" color="black" size="100" speed="2" stroke="10" wire:loading wire:target='getData'></l-ring>
             <div class="modal-body" wire:loading.remove>
                 <div class="mb-3">
                     <label class="form-label" for="view-title">Title</label>
@@ -19,14 +19,12 @@
                 </div>
                 <div class="mb-3 d-flex flex-column">
                     <label class="form-label">Video Content</label>
-                    @if ($thumbnail && $video)
-                        <video controls height="200px" poster="{{ $thumbnail }}" width='300px'>
-                            <source src="{{ $this->video }}" type="video/mp4">
+                    @if ($video_path && $thumbnail_path)
+                        <video controls height="200px" id='view-video' poster="{{ $thumbnail_path }}" width='300px' class="object-fit-cover border rounded">
+                            <source src="{{ $video_path }}" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
                     @endif
-
-                    <div wire:loading>Loading</div>
                 </div>
             </div>
         </div>

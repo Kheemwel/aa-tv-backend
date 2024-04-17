@@ -9,7 +9,9 @@ class Videos extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'description', 'thumbnail', 'video', 'video_category_id'];
+    protected $fillable = [
+        'title', 'description', 'video_category_id', 'thumbnail_path', 'video_path'
+    ];
     protected $appends = ['category_name'];
 
     public function belongsToVideoCategories()
