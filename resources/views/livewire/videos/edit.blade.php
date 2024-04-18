@@ -9,7 +9,7 @@
             </div>
             <l-ring bg-opacity="0" class="align-self-center m-5" color="black" size="100" speed="2" stroke="10" wire:loading wire:target='getData'></l-ring>
             <div class="modal-body" wire:loading.remove wire:target='getData'>
-                <form id='form-add' wire:submit.prevent='update()'>
+                <form id='form-edit' wire:submit.prevent='update()'>
                     <div class="mb-3">
                         <label class="form-label" for="edit-title">Title</label>
                         <input class="form-control @error('title') is-invalid @enderror" id='edit-title' type="text" wire:model='title'>
@@ -66,24 +66,17 @@
                             <div aria-valuemax="100" aria-valuemin="0" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" x-bind:style="`width: ${progress}%;`" x-text="progress + '%'"></div>
                         </div>
                     </div>
-                    <div class="mb-3 d-flex flex-column">
+                    <div class="mb-3 d-flex flex-column video-container">
                         <label class="form-label" for="preview-edit-video">Video Preview:</label>
-                        @if ($video)
-                            <video class="object-fit-cover border rounded" controls height="200px" id="preview-edit-video" width='300px'>
-                                <source src="{{ $video->temporaryUrl() }}" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>
-                        @elseif($video_path)
-                            <video class="object-fit-cover border rounded" controls height="200px" id="preview-edit-video" width='300px'>
-                                <source src="{{ $video_path }}" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>
-                        @endif
+                        <video class="object-fit-cover border rounded" controls height="200px" id='view-video' id="preview-edit-video" width='300px'>
+                            <source src="{{ $video ? $video->temporaryUrl() : $video_path }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
                     </div>
                 </form>
             </div>
             <div class="modal-footer justify-content-center">
-                <button class="btn btn-primary w-25" form="form-add" type="submit" x-bind:disabled='thumbnailUpload || videoUpload'>Save</button>
+                <button class="btn btn-primary w-25" form="form-edit" type="submit" x-bind:disabled='thumbnailUpload || videoUpload'>Save</button>
             </div>
         </div>
     </div>

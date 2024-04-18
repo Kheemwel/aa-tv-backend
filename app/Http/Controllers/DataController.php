@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\VideoStream;
 use App\Models\Announcements;
 use App\Models\GameData;
 use App\Models\VideoCategories;
 use App\Models\Videos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 
 class DataController extends Controller
@@ -49,7 +51,11 @@ class DataController extends Controller
             abort(404);
         }
 
-        return Storage::response('private/'.$path);
+        $fileContents = Storage::disk('private')->get($path);
+        $response = Response::make($fileContents, 200);
+        $response->header('Content-Type', "video/mp4");
+
+        return $response;
     }
 
     public function getAnnouncements()

@@ -8,7 +8,7 @@
                 <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button" wire:click='resets()'></button>
             </div>
             <l-ring bg-opacity="0" class="align-self-center m-5" color="black" size="100" speed="2" stroke="10" wire:loading wire:target='getData'></l-ring>
-            <div class="modal-body" wire:loading.remove>
+            <div class="modal-body" wire:loading.remove wire:target='getData'>
                 <div class="mb-3">
                     <label class="form-label" for="view-title">Title</label>
                     <input class="form-control" disabled id='view-title' type="text" wire:model='title'>
@@ -17,14 +17,12 @@
                     <label class="form-label" for="view-description">Description</label>
                     <textarea class="form-control" disabled id='view-description' rows="5" wire:model='description'></textarea>
                 </div>
-                <div class="mb-3 d-flex flex-column">
+                <div class="mb-3 d-flex flex-column video-container">
                     <label class="form-label">Video Content</label>
-                    @if ($video_path && $thumbnail_path)
-                        <video controls height="200px" id='view-video' poster="{{ $thumbnail_path }}" width='300px' class="object-fit-cover border rounded">
-                            <source src="{{ $video_path }}" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                    @endif
+                    <video controls height="200px" id='view-video' poster="{{ $thumbnail_path }}" width='300px' class="object-fit-cover border rounded">
+                        <source src="{{ $video_path }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
                 </div>
             </div>
         </div>

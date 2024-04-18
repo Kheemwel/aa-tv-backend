@@ -5,7 +5,6 @@ namespace App\Livewire;
 use App\Models\VideoCategories;
 use App\Models\Videos;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\URL;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -50,8 +49,8 @@ class VideosLivewire extends Component
             'video.max' => 'Video must be less than 1GB'
         ]);
 
-        $thumbnailPath = $this->thumbnail->storeAs('images', 'thumbnail--'.Str::random(50).'.'.$this->thumbnail->getClientOriginalExtension(), 'private');
-        $videoPath = $this->video->storeAs('videos', 'video--'.Str::random(50).'.'.$this->video->getClientOriginalExtension(), 'private');
+        $thumbnailPath = $this->thumbnail->storeAs('images', 'thumbnail--' . Str::random(50) . '.' . $this->thumbnail->getClientOriginalExtension(), 'private');
+        $videoPath = $this->video->storeAs('videos', 'video--' . Str::random(50) . '.' . $this->video->getClientOriginalExtension(), 'private');
         Videos::create([
             'title' => $validated['title'],
             'description' => $validated['description'],
@@ -73,12 +72,57 @@ class VideosLivewire extends Component
         $this->title = $video->title;
         $this->description = $video->description;
         $this->video_category_id = $video->video_category_id;
-        $this->thumbnail_path = $video->thumbnail_path.'/'.$api_token;
-        $this->video_path = $video->video_path.'/'.$api_token;
+        $this->thumbnail_path = $video->thumbnail_path . '/' . $api_token;
+        $this->video_path = $video->video_path . '/' . $api_token;
     }
 
     public function update()
     {
+        $rules = [
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'video_category_id' => 'required|int'
+        ];
+
+        if(empty($this->thumbnail_path)) {
+            $rules['thumbnail'] = "required|mimetypes:image/png,image/jpg,image/jpeg|max:16000|";
+        }
+
+        if(empty($this->video_path)) {
+            $rules['video'] = "required|mimetypes:video/mp4|max:1000000|";
+        }
+
+        $validated = $this->validate($rules, [
+            'thumbnail.required' => 'Please upload image for thumbnail',
+            'thumbnail.max' => 'Image must be less than 16MB',
+            'video.required' => 'Please upload video',
+            'video.max' => 'Video must be less than 1GB'
+        ]);
+
+        $video = Videos::find($this->selectedID);
+
+        $thumbnailPath = $video->thumbnail_path;
+        if ($this->thumbnail) {
+            Storage::disk('private')->delete($this->thumbnail_path);
+            $thumbnailPath = $this->thumbnail->storeAs('images', 'thumbnail--' . Str::random(50) . '.' . $this->thumbnail->getClientOriginalExtension(), 'private');
+        }
+
+        $videoPath = $video->video_path;
+        if ($this->video) {
+            Storage::disk('private')->delete($this->video_path);
+            $videoPath = $this->video->storeAs('videos', 'video--' . Str::random(50) . '.' . $this->video->getClientOriginalExtension(), 'private');
+        }
+        
+        $video->update([
+            'title' => $validated['title'],
+            'description' => $validated['description'],
+            'video_category_id' => $validated['video_category_id'],
+            'thumbnail_path' => $thumbnailPath,
+            'video_path' => $videoPath,
+        ]);
+
+        $this->resets();
+        $this->dispatch('closeModals');
     }
 
     public function delete($id)

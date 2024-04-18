@@ -36,7 +36,7 @@
 
 @section('scripts')
     <script>
-        Livewire.on('loadVideo', (data) => {
+        Livewire.on('loadVideo', () => {
             setTimeout(() => {
                 $('video').each(function() {
                     this.load();
