@@ -17,9 +17,9 @@
                     <td>{{ $vid->description }}</td>
                     <td>{{ $vid->category_name }}</td>
                     <td>
-                        <button class="btn btn-success" data-bs-target='#viewModal' data-bs-toggle='modal' wire:click="getData({{ $vid->id }})"><i class="bi bi-eye-fill"></i></button>
-                        <button class="btn btn-primary" data-bs-target='#editModal' data-bs-toggle='modal' wire:click="getData({{ $vid->id }})"><i class="bi bi-pencil-square"></i></button>
-                        <button class="btn btn-danger" wire:click="delete({{ $vid->id }})"><i class="bi bi-trash-fill"></i></button>
+                        <button class="btn btn-icon-green" data-bs-target='#viewModal' data-bs-toggle='modal' wire:click="getData({{ $vid->id }})"><i class="bi bi-eye-fill"></i></button>
+                        <button class="btn btn-icon-blue" data-bs-target='#editModal' data-bs-toggle='modal' wire:click="getData({{ $vid->id }})"><i class="bi bi-pencil-square"></i></button>
+                        <button class="btn btn-icon-purple" wire:click="delete({{ $vid->id }})"><i class="bi bi-trash-fill"></i></button>
                     </td>
                 </tr>
             @endforeach

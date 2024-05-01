@@ -13,13 +13,12 @@
         <tbody>
             @foreach ($gameData as $data)
             <tr>
-                
                 <td>{{ $data->id }}</td>
                 <td>{{ $data->user_name }}</td>
                 <td>{{ $data->prize }}</td>
                 <td>{{ date('F d, Y', strtotime($data->date_time)) }}</td>
                 <td>{{ date('h:i A', strtotime($data->date_time)) }}</td>
-                <td><button class="btn btn-danger" wire:click="delete({{ $data->id }})"><i class="bi bi-trash-fill"></i> Delete</button></td>
+                <td><button class="btn btn-icon-purple" wire:click="delete({{ $data->id }})"><i class="bi bi-trash-fill"></i></button></td>
             </tr>
             @endforeach
         </tbody>

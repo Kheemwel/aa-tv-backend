@@ -7,3 +7,37 @@
 // Bootstrap
 @import 'bootstrap/scss/bootstrap';
 @import 'bootstrap-icons/font/bootstrap-icons.css';
+
+// My Custom CSS
+.btn-icon-blue {
+    color: white;
+    background-color: $blue;
+}
+
+.btn-icon-blue:hover {
+    color: $blue;
+    background-color: white;
+    border: 1px solid $blue;
+}
+
+.btn-icon-green {
+    color: white;
+    background-color: $green;
+}
+
+.btn-icon-green:hover {
+    color: $green;
+    background-color: white;
+    border: 1px solid $green;
+}
+
+.btn-icon-purple {
+    color: white;
+    background-color: purple;
+}
+
+.btn-icon-purple:hover {
+    color: purple;
+    background-color: white;
+    border: 1px solid purple;
+}

@@ -13,9 +13,9 @@
                 
                 <td>{{ $cat->id }}</td>
                 <td>{{ $cat->category_name }}</td>
-                <td><button class="btn btn-success" data-bs-target='#viewModal' data-bs-toggle='modal' wire:click="getData({{ $cat->id }})"><i class="bi bi-eye-fill"></i></button>
-                    <button class="btn btn-primary" data-bs-target='#editModal' data-bs-toggle='modal' wire:click="getData({{ $cat->id }})"><i class="bi bi-pencil-square"></i></button>
-                    <button class="btn btn-danger" wire:click="delete({{ $cat->id }})"><i class="bi bi-trash-fill"></i> Delete</button>
+                <td><button class="btn btn-icon-green" data-bs-target='#viewModal' data-bs-toggle='modal' wire:click="getData({{ $cat->id }})"><i class="bi bi-eye-fill"></i></button>
+                    <button class="btn btn-icon-blue" data-bs-target='#editModal' data-bs-toggle='modal' wire:click="getData({{ $cat->id }})"><i class="bi bi-pencil-square"></i></button>
+                    <button class="btn btn-icon-purple" wire:click="delete({{ $cat->id }})"><i class="bi bi-trash-fill"></i></button>
                 </td>
             </tr>
             @endforeach

@@ -35,7 +35,6 @@ class EventsLivewire extends Component
 
         Events::create($validated);
         $this->resets();
-        $this->dispatch('closeModals');
     }
 
     public function getData($id)

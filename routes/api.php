@@ -17,6 +17,7 @@ Route::middleware([ApiTokenMiddleware::class])->group(function () {
     Route::get('/get-announcements', [DataController::class, 'getAnnouncements']);
     Route::get('/get-videos', [DataController::class, 'getVideos']);
     Route::get('/get-categories', [DataController::class, 'getCategories']);
+    Route::get('/get-events', [DataController::class, 'getEvents']);
 });
 
 Route::middleware([FileAccessMiddleware::class])->group(function () {

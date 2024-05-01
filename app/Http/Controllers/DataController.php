@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\VideoStream;
 use App\Models\Announcements;
+use App\Models\Events;
 use App\Models\GameData;
 use App\Models\VideoCategories;
 use App\Models\Videos;
@@ -61,6 +62,11 @@ class DataController extends Controller
     public function getAnnouncements()
     {
         return Announcements::latest()->get();
+    }
+
+    public function getEvents() 
+    {
+        return Events::orderBy('event_start')->get();
     }
 
     public function getCategories()
