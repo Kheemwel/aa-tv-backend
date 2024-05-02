@@ -7,7 +7,9 @@
                 </h5>
                 <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button" wire:click='resets()'></button>
             </div>
-            <l-ring bg-opacity="0" class="align-self-center m-5" color="black" size="100" speed="2" stroke="10" wire:loading wire:target='getData'></l-ring>
+            <div class="spinner-border align-self-center m-5" role="status" style="height: 5rem; width: 5rem;" wire:loading wire:target='getData'>
+                <span class="visually-hidden">Loading...</span>
+            </div>
             <div class="modal-body" wire:loading.remove wire:target='getData'>
                 <form id='form-edit' wire:submit.prevent='update()'>
                     <div class="mb-3">

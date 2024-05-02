@@ -8,9 +8,6 @@
     <title>{{ $title ?? 'Flutter Backend' }}</title>
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
-    {{-- CDN link for loader icon --}}
-    <script type="module" src="https://cdn.jsdelivr.net/npm/ldrs/dist/auto/ring.js"></script>
-
     @livewireStyles()
 </head>
 
