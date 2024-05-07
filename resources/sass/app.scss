@@ -8,6 +8,16 @@
 @import 'bootstrap/scss/bootstrap';
 @import 'bootstrap-icons/font/bootstrap-icons.css';
 
+
+//Override Bootstrap Class
+.modal-header {
+    text-align: center;
+}
+
+.modal-title {
+    width: 100%;
+}
+
 // My Custom CSS
 .btn-icon-blue {
     color: white;
@@ -40,4 +50,20 @@
     color: purple;
     background-color: white;
     border: 1px solid purple;
+}
+
+.btn-float {
+    color: white;
+    background-color: $blue;
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    border-radius: 3rem;
+    border: none;
+    padding: 0.75rem;
+    box-shadow: black 0 0 3px 0;
+}
+
+.btn-float:hover {
+    background-color: darken($color: $blue, $amount: 10%);
 }

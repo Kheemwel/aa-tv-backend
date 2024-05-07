@@ -19,7 +19,7 @@
                 </form>
             </div>
             <div class="modal-footer justify-content-center">
-                <button class="btn btn-primary w-25" form="form-edit" type="submit">Save Changes</button>
+                <x-submit-button form="form-edit" target='update'>Save Changes</x-submit-button>
             </div>
         </div>
     </div>

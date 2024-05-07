@@ -1,4 +1,4 @@
-<div class="col-10 overflow-auto">
+<div>
     <table class="table">
         <thead class="sticky-top table-primary">
             <tr>
@@ -25,7 +25,8 @@
             @endforeach
         </tbody>
     </table>
-    <button class="btn btn-primary float-end sticky-bottom" data-bs-target='#addModal' data-bs-toggle='modal'>
+    <button class="btn-float" data-bs-target='#addModal' data-bs-toggle='modal'>
+        <i class="bi bi-plus-lg"></i>
         Add Video
     </button>
 

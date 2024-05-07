@@ -16,13 +16,6 @@
                     <label class="form-label" for="view-description">Description</label>
                     <textarea class="form-control" id='view-description' disabled rows="5">{{ $description }}</textarea>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label" for="input-description">Description</label>
-                    <textarea class="form-control @error('description') is-invalid @enderror" id='input-description' rows="5" wire:model='description'></textarea>
-                    <div class="invalid-feedback">
-                        Please enter description
-                    </div>
-                </div>
                 <div class="mb-3 d-flex justify-content-evenly">
                     <div>
                         <label class="form-label" for="view-event-start">Event Start</label>

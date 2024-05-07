@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>{{ $title ?? 'Flutter Backend' }}</title>
+    <title>AA TV | {{ $title }}</title>
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
     @livewireStyles()
@@ -16,12 +16,22 @@
         {{-- Left navigation bar --}}
         @include('components.layouts.sidebar')
 
-        {{-- Main content --}}
-        {{ $slot }}
+
+        <div class="col-10 overflow-auto">
+            {{-- Top bar --}}
+            @livewire('topbar-livewire')
+
+            {{-- Main content --}}
+            <div class="p-3">
+                <div class="card">
+                    {{ $slot }}
+                </div>
+            </div>
+        </div>
     </div>
 
     @livewireScripts()
-    
+
     <script>
         // Close all modals
         Livewire.on('closeModals', () => {

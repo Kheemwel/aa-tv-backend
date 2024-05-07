@@ -70,7 +70,7 @@
                     @if ($video)
                         <div class="mb-3 d-flex flex-column">
                             <label class="form-label" for="preview-video">Video Preview:</label>
-                            <video controls height="200px" id="preview-video" width='300px' class="object-fit-cover border rounded">
+                            <video class="object-fit-cover border rounded" controls height="200px" id="preview-video" width='300px'>
                                 <source src="{{ $video->temporaryUrl() }}" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>
@@ -79,7 +79,7 @@
                 </form>
             </div>
             <div class="modal-footer justify-content-center">
-                <button class="btn btn-primary w-25" form="form-add" type="submit" x-bind:disabled='thumbnailUpload || videoUpload'>Save</button>
+                <x-submit-button form="form-add" target='add' disabledBy='thumbnailUpload || videoUpload'>Save</x-submit-button>
             </div>
         </div>
     </div>

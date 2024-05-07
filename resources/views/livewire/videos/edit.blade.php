@@ -78,7 +78,7 @@
                 </form>
             </div>
             <div class="modal-footer justify-content-center">
-                <button class="btn btn-primary w-25" form="form-edit" type="submit" x-bind:disabled='thumbnailUpload || videoUpload'>Save</button>
+                <x-submit-button form="form-edit" target='update' disabledBy='thumbnailUpload || videoUpload'>Save Changes</x-submit-button>
             </div>
         </div>
     </div>

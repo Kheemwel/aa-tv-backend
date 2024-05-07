@@ -46,7 +46,7 @@
                 </form>
             </div>
             <div class="modal-footer justify-content-center">
-                <button class="btn btn-primary w-25" form="form-add" type="submit">Save</button>
+                <x-submit-button form="form-add" target='add'>Save</x-submit-button>
             </div>
         </div>
     </div>
