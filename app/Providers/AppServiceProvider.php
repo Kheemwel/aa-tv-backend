@@ -53,6 +53,6 @@ class AppServiceProvider extends ServiceProvider
      */
     protected function isLocalTunnel()
     {
-        return Request::header('host') === 'android-tv.loca.lt';
+        return Request::header('host') === 'android-tv-test.loca.lt';
     }
 }

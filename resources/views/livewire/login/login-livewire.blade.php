@@ -1,6 +1,6 @@
 <form class='card p-3 align-items-center' wire:submit='login()' style="width: 25rem;">
     <div class="mb-5 d-flex flex-column align-items-center">
-        <img alt="" src="{{ asset('build/assets/AA TV Banner.png') }}" width="100px">
+        <img alt="" src="{{ asset('assets/AA TV Banner.png') }}" width="100px">
         <h3 class="mt-2 fw-bold">AA TV</h1>
     </div>
     <div class="d-flex flex-column w-100">

@@ -64,7 +64,7 @@ class DataController extends Controller
         return Announcements::latest()->get();
     }
 
-    public function getEvents() 
+    public function getEvents()
     {
         return Events::orderBy('event_start')->get();
     }
@@ -84,8 +84,8 @@ class DataController extends Controller
                 'id' => $key->id,
                 'title' => $key->title,
                 'description' => $key->description,
-                'thumbnail_path' => url($key->thumbnail_path.'/'.$apiToken),
-                'video_path' => url($key->video_path.'/'.$apiToken),
+                'thumbnail_path' => url('api/'. $key->thumbnail_path . '/' . $apiToken),
+                'video_path' => url('api/'. $key->video_path . '/' . $apiToken),
                 'category' => $key->category_name,
                 'created_at' => $key->created_at,
             ];
@@ -121,7 +121,7 @@ class DataController extends Controller
         // Make a POST request with JSON data and API token header
         $response = Http::withHeaders([
             'Authorization' => "Bearer $apiToken",
-        ])->get(url('https://android-tv.loca.lt/api/get-announcements'));
+        ])->get(url('https://android-tv-test.loca.lt/api/get-announcements'));
 
         // Display the response
         return $response->json();
@@ -135,7 +135,7 @@ class DataController extends Controller
         // Make a POST request with JSON data and API token header
         $response = Http::withHeaders([
             'Authorization' => "Bearer $apiToken",
-        ])->get(url('https://android-tv.loca.lt/api/get-videos'));
+        ])->get(url('https://android-tv-test.loca.lt/api/get-videos'));
 
         // Display the response
         return $response->json();
@@ -157,7 +157,7 @@ class DataController extends Controller
         $response = Http::withHeaders([
             'Authorization' => "Bearer $apiToken",
             'Content-Type' => 'application/json',
-        ])->post(url('https://android-tv.loca.lt/api/save-data'), $jsonData);
+        ])->post(url('https://android-tv-test.loca.lt/api/save-data'), $jsonData);
 
         // Display the response
         dd($response->status(), $response->json());

@@ -20,7 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // $middleware->append(ApiTokenMiddleware::class); // add this if you want to make it global middleware
         $middleware->trustProxies(
             at: [
-                'android-tv.loca.lt',
+                'android-tv-test.loca.lt',
             ],
             headers: Request::HEADER_X_FORWARDED_FOR |
                 Request::HEADER_X_FORWARDED_HOST |

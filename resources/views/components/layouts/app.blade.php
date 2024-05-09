@@ -14,7 +14,7 @@
 <body>
     <div class="d-flex vh-100">
         {{-- Left navigation bar --}}
-        @include('components.layouts.sidebar')
+        @include('components.sidebar')
 
 
         <div class="col-10 overflow-auto">
