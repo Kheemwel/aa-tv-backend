@@ -98,17 +98,14 @@ class DataController extends Controller
     {
         // Validate request data
         $validatedData = $request->validate([
-            'user_name' => 'required|string|max:255',
-            'prize' => 'required|string|max:255',
+            'username' => 'required|string|max:255',
+            'game_name' => 'required|string|max:255',
+            'description' => 'required|string|',
             'date_time' => 'required|date',
         ]);
 
-        // Create new GameData instance and save to database
-        $gameData = new GameData();
-        $gameData->user_name = $validatedData['user_name'];
-        $gameData->prize = $validatedData['prize'];
-        $gameData->date_time = $validatedData['date_time'];
-        $gameData->save();
+        //Save the validated data to database
+        GameData::create($validatedData);
 
         return response()->json(['message' => 'Game data saved successfully'], 200);
     }

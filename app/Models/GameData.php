@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class GameData extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_name', 'prize', 'date_time'];
+    protected $fillable = ['username', 'game_name', 'description', 'date_time'];
 }

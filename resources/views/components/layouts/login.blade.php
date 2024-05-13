@@ -15,15 +15,19 @@
         }
     </style>
 
-    @livewireStyles()
+    @livewireStyles
 </head>
 
 <body class="bg-primary vh-100 d-flex justify-content-center align-items-center">
     {{ $slot }}
 
-    @livewireScripts()
+    @livewireScripts
 
-    @yield('scripts')
+    <script>
+        Livewire.on('loginSuccess', () => {
+            $('#login-indicator').removeClass('d-none');
+        });
+    </script>
 </body>
 
 </html>

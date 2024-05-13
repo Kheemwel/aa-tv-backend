@@ -8,7 +8,7 @@
     <title>AA TV | {{ $title }}</title>
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
-    @livewireStyles()
+    @livewireStyles
 </head>
 
 <body>
@@ -23,14 +23,14 @@
 
             {{-- Main content --}}
             <div class="p-3">
-                <div class="card">
+                <div class="card p-1">
                     {{ $slot }}
                 </div>
             </div>
         </div>
     </div>
 
-    @livewireScripts()
+    @livewireScripts
 
     <script>
         // Close all modals

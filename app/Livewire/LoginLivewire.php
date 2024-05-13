@@ -28,6 +28,7 @@ class LoginLivewire extends Component
         ]);
 
         if (Auth::attempt($credentials)) {
+            $this->dispatch('loginSuccess');
             return redirect()->intended('games');
         } else {
             $this->error_message = 'Incorrect username or password';

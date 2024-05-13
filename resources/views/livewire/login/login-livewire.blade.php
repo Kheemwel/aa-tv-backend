@@ -1,4 +1,11 @@
 <form class='card p-3 align-items-center' wire:submit='login()' style="width: 25rem;">
+    <div style="z-index: 999" id='login-indicator' class="card h-100 w-100 position-absolute top-0 d-flex flex-column justify-content-center align-items-center d-none">
+        <div class="spinner-border" role="status" style="height: 5rem; width: 5rem;">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <h3>Logging in...</h3>
+    </div>
+
     <div class="mb-5 d-flex flex-column align-items-center">
         <img alt="" src="{{ asset('assets/AA TV Banner.png') }}" width="100px">
         <h3 class="mt-2 fw-bold">AA TV</h1>

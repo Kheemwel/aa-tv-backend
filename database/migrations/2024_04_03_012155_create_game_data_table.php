@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('game_data', function (Blueprint $table) {
             $table->id();
-            $table->string('user_name');
-            $table->string('prize');
+            $table->string('username');
+            $table->string('game_name');
+            $table->text('description');
             $table->dateTime('date_time');
             $table->timestamps();
         });
