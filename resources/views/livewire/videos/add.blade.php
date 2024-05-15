@@ -51,7 +51,7 @@
                     @if ($thumbnail)
                         <div class="mb-3 d-flex flex-column">
                             <label class="form-label" for="preview-thumbnail">Thumbnail Preview:</label>
-                            <img class='img-thumbnail' height="200px" id='preview-thumbnail' src="{{ $thumbnail->temporaryUrl() }}" width="200px">
+                            <img class='img-thumbnail align-self-center' height="200px" id='preview-thumbnail' src="{{ $thumbnail->temporaryUrl() }}" width="200px">
                         </div>
                     @endif
                     <div class="mb-3" x-data="{ progress: 0 }" x-on:livewire-upload-error="videoUpload = false; progress = 0" x-on:livewire-upload-finish="videoUpload = false; progress = 0" x-on:livewire-upload-progress="progress = $event.detail.progress" x-on:livewire-upload-start="videoUpload = true">
@@ -70,7 +70,7 @@
                     @if ($video)
                         <div class="mb-3 d-flex flex-column">
                             <label class="form-label" for="preview-video">Video Preview:</label>
-                            <video class="object-fit-cover border rounded" controls height="200px" id="preview-video" width='300px'>
+                            <video class="object-fit-cover border rounded align-self-center" controls height="200px" id="preview-video" width='300px'>
                                 <source src="{{ $video->temporaryUrl() }}" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>

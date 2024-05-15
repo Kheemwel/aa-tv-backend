@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\VideoStream;
+use App\Http\Controllers\VideoStream;
 use App\Models\Announcements;
 use App\Models\Events;
 use App\Models\GameData;
@@ -36,27 +36,63 @@ class DataController extends Controller
             abort(404);
         }
 
-        return Storage::response('private/'.$path);
+        return Storage::response('private/' . $path);
     }
 
-    public function viewVideo($video, $token)
+    public function viewVideo($video, $token, Request $request)
     {
         // Check if the token is valid
         if ($token !== 'e94061b3-bc9f-489d-99ce-ef9e8c9058ce') {
             abort(403, 'Unauthorized');
         }
 
-        $path = 'videos/' . $video;
+        $filePath = 'private/videos/' . $video;
 
-        if (!Storage::disk('private')->exists($path)) {
+        if (!Storage::exists($filePath)) {
             abort(404);
         }
 
-        $fileContents = Storage::disk('private')->get($path);
-        $response = Response::make($fileContents, 200);
-        $response->header('Content-Type', "video/mp4");
+        $fileSize = Storage::size($filePath);
+        $mimeType = Storage::mimeType($filePath);
 
-        return $response;
+        $headers = [
+            'Content-Type' => $mimeType,
+            'Content-Length' => $fileSize,
+            'Accept-Ranges' => 'bytes',
+            'Content-Disposition' => 'inline; filename="' . basename($filePath) . '"',
+        ];
+
+        $stream = Storage::disk('local')->readStream($filePath);
+
+        if ($request->headers->has('Range')) {
+            $range = $request->header('Range');
+            list(, $range) = explode('=', $range, 2);
+            list($start, $end) = explode('-', $range, 2);
+
+            $start = intval($start);
+            $end = $end === '' ? $fileSize - 1 : intval($end);
+
+            $length = $end - $start + 1;
+
+            fseek($stream, $start);
+
+            return response()->stream(function () use ($stream, $length) {
+                echo fread($stream, $length);
+                if (is_resource($stream)) {
+                    fclose($stream);
+                }
+            }, 206, array_merge($headers, [
+                'Content-Range' => "bytes $start-$end/$fileSize",
+                'Content-Length' => $length,
+            ]));
+        } else {
+            return response()->stream(function () use ($stream) {
+                fpassthru($stream);
+                if (is_resource($stream)) {
+                    fclose($stream);
+                }
+            }, 200, $headers);
+        }
     }
 
     public function getAnnouncements()
@@ -84,8 +120,8 @@ class DataController extends Controller
                 'id' => $key->id,
                 'title' => $key->title,
                 'description' => $key->description,
-                'thumbnail_path' => url('api/'. $key->thumbnail_path . '/' . $apiToken),
-                'video_path' => url('api/'. $key->video_path . '/' . $apiToken),
+                'thumbnail_path' => url('api/' . $key->thumbnail_path . '/' . $apiToken),
+                'video_path' => url('api/' . $key->video_path . '/' . $apiToken),
                 'category' => $key->category_name,
                 'created_at' => $key->created_at,
             ];

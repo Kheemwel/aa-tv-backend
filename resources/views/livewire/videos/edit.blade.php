@@ -53,7 +53,7 @@
                     </div>
                     <div class="mb-3 d-flex flex-column">
                         <label class="form-label" for="preview-edit-thumbnail">Thumbnail Preview:</label>
-                        <img class='img-thumbnail' height="200px" id='preview-edit-thumbnail' src="{{ $thumbnail ? $thumbnail->temporaryUrl() : $thumbnail_path }}" width="200px">
+                        <img class='img-thumbnail align-self-center' height="200px" id='preview-edit-thumbnail' src="{{ $thumbnail ? $thumbnail->temporaryUrl() : $thumbnail_path }}" width="200px">
                     </div>
                     <div class="mb-3" x-data="{ progress: 0 }" x-on:livewire-upload-error="videoUpload = false; progress = 0" x-on:livewire-upload-finish="videoUpload = false; progress = 0" x-on:livewire-upload-progress="progress = $event.detail.progress" x-on:livewire-upload-start="videoUpload = true">
                         <label class="form-label" for="edit-upload-video">Video</label>
@@ -70,7 +70,7 @@
                     </div>
                     <div class="mb-3 d-flex flex-column video-container">
                         <label class="form-label" for="preview-edit-video">Video Preview:</label>
-                        <video class="object-fit-cover border rounded" controls height="200px" id='view-video' id="preview-edit-video" width='300px'>
+                        <video class="object-fit-cover border rounded align-self-center" controls height="200px" id='view-video' id="preview-edit-video" width='300px'>
                             <source src="{{ $video ? $video->temporaryUrl() : $video_path }}" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>

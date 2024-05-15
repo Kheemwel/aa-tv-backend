@@ -5,11 +5,11 @@
     </div>
 
     <ul class="nav nav-pills navbar-expand-lg flex-column">
-        <x-nav-link url='games'>Games</x-nav-link>
-        <x-nav-link url='announcements'>Announcements</x-nav-link>
-        <x-nav-link url='events'>Events</x-nav-link>
-        <x-nav-link url='videos'>Videos</x-nav-link>
-        <x-nav-link url='video-categories'>Video Categories</x-nav-link>
-        <x-nav-link>Notifications</x-nav-link>
+        <x-nav-link url='games'><i class="bi bi-controller"></i> Games</x-nav-link>
+        <x-nav-link url='announcements'><i class="bi bi-megaphone-fill"></i> Announcements</x-nav-link>
+        <x-nav-link url='events'><i class="bi bi-calendar-event-fill"></i> Events</x-nav-link>
+        <x-nav-link url='videos'><i class="bi bi-file-earmark-play-fill"></i> Videos</x-nav-link>
+        <x-nav-link url='video-categories'><i class="bi bi-bookmarks-fill"></i> Video Categories</x-nav-link>
+        <x-nav-link><i class="bi bi-bell-fill"></i> Notifications</x-nav-link>
     </ul>
 </aside>

@@ -21,7 +21,7 @@
                 </div>
                 <div class="mb-3 d-flex flex-column video-container">
                     <label class="form-label">Video Content</label>
-                    <video class="object-fit-cover border rounded" controls height="200px" id='view-video' poster="{{ $thumbnail_path }}" width='300px'>
+                    <video class="object-fit-cover border rounded align-self-center" controls height="200px" id='view-video' poster="{{ $thumbnail_path }}" width='300px'>
                         <source src="{{ $video_path }}" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
