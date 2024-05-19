@@ -2,31 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\VideoStream;
 use App\Models\Announcements;
 use App\Models\Events;
 use App\Models\GameData;
 use App\Models\VideoCategories;
 use App\Models\Videos;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * This controller handle all the data request
+ */
 class DataController extends Controller
 {
-    public function getData()
-    {
-        return [
-            'id' => 123,
-            'name' => 'Kim'
-        ];
-    }
 
+    /**
+     * Handle requesting access to stored images
+     */
     public function viewImage($image, $token)
     {
         // Check if the token is valid
-        if ($token !== 'e94061b3-bc9f-489d-99ce-ef9e8c9058ce') {
+        if ($token !== '199fed4b-966e-49c5-b19b-0ae361c14f29') {
             abort(403, 'Unauthorized');
         }
 
@@ -39,10 +35,14 @@ class DataController extends Controller
         return Storage::response('private/' . $path);
     }
 
+    /**
+     * Handle requesting access to stored videos
+     * Stream the videos as a response
+     */
     public function viewVideo($video, $token, Request $request)
     {
         // Check if the token is valid
-        if ($token !== 'e94061b3-bc9f-489d-99ce-ef9e8c9058ce') {
+        if ($token !== 'fcf5346a-43fe-41ae-b181-f374bfc9e135') {
             abort(403, 'Unauthorized');
         }
 
@@ -95,24 +95,35 @@ class DataController extends Controller
         }
     }
 
+    /**
+     * Fetch all announcements data
+     */
     public function getAnnouncements()
     {
         return Announcements::latest()->get();
     }
-
+    
+    /**
+     * Fetch all events data and order it by event start
+     */
     public function getEvents()
     {
         return Events::orderBy('event_start')->get();
     }
 
+    /**
+     * Fetch all video categories data
+     */
     public function getCategories()
     {
         return VideoCategories::select('id', 'category_name')->get();
     }
 
+    /**
+     * Fetch all videos data
+     */
     public function getVideos()
     {
-        $apiToken = 'e94061b3-bc9f-489d-99ce-ef9e8c9058ce';
         $result = [];
         $videos = Videos::latest()->get();
         foreach ($videos as $key) {
@@ -120,8 +131,8 @@ class DataController extends Controller
                 'id' => $key->id,
                 'title' => $key->title,
                 'description' => $key->description,
-                'thumbnail_path' => url('api/' . $key->thumbnail_path . '/' . $apiToken),
-                'video_path' => url('api/' . $key->video_path . '/' . $apiToken),
+                'thumbnail_path' => $key->thumbnail_path,
+                'video_path' => $key->video_path,
                 'category' => $key->category_name,
                 'created_at' => $key->created_at,
             ];
@@ -130,69 +141,24 @@ class DataController extends Controller
         return $result;
     }
 
-    public function storeData(Request $request)
+    /**
+     * Store the sent game result from AA TV Flutter app
+     */
+    public function saveGameResult(Request $request)
     {
         // Validate request data
         $validatedData = $request->validate([
             'username' => 'required|string|max:255',
             'game_name' => 'required|string|max:255',
-            'description' => 'required|string|',
-            'date_time' => 'required|date',
+            'description' => 'required|string',
         ]);
 
-        //Save the validated data to database
+        // Add the current date_time to the validated data
+        $validatedData['date_time'] = now();
+
+        // Save the validated data to the database
         GameData::create($validatedData);
 
         return response()->json(['message' => 'Game data saved successfully'], 200);
-    }
-
-    public function testGet()
-    {
-        // API token
-        $apiToken = 'e94061b3-bc9f-489d-99ce-ef9e8c9058ce';
-
-        // Make a POST request with JSON data and API token header
-        $response = Http::withHeaders([
-            'Authorization' => "Bearer $apiToken",
-        ])->get(url('https://android-tv-test.loca.lt/api/get-announcements'));
-
-        // Display the response
-        return $response->json();
-    }
-
-    public function testVideos()
-    {
-        // API token
-        $apiToken = 'e94061b3-bc9f-489d-99ce-ef9e8c9058ce';
-
-        // Make a POST request with JSON data and API token header
-        $response = Http::withHeaders([
-            'Authorization' => "Bearer $apiToken",
-        ])->get(url('https://android-tv-test.loca.lt/api/get-videos'));
-
-        // Display the response
-        return $response->json();
-    }
-
-    public function testApiTokenMiddleware()
-    {
-        // Sample JSON data to send
-        $jsonData = [
-            'user_name' => 'John Doe',
-            'prize' => 'Gold Medal',
-            'date_time' => '2023-12-10 14:30:00',
-        ];
-
-        // API token
-        $apiToken = 'e94061b3-bc9f-489d-99ce-ef9e8c9058ce';
-
-        // Make a POST request with JSON data and API token header
-        $response = Http::withHeaders([
-            'Authorization' => "Bearer $apiToken",
-            'Content-Type' => 'application/json',
-        ])->post(url('https://android-tv-test.loca.lt/api/save-data'), $jsonData);
-
-        // Display the response
-        dd($response->status(), $response->json());
     }
 }

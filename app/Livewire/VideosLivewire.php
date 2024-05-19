@@ -64,7 +64,8 @@ class VideosLivewire extends Component
 
     public function getData($id)
     {
-        $api_token = 'e94061b3-bc9f-489d-99ce-ef9e8c9058ce';
+        $imageToken = '199fed4b-966e-49c5-b19b-0ae361c14f29';
+        $videoToken = 'fcf5346a-43fe-41ae-b181-f374bfc9e135';
 
         $this->selectedID = $id;
 
@@ -72,8 +73,8 @@ class VideosLivewire extends Component
         $this->title = $video->title;
         $this->description = $video->description;
         $this->video_category_id = $video->video_category_id;
-        $this->thumbnail_path = $video->thumbnail_path . '/' . $api_token;
-        $this->video_path = $video->video_path . '/' . $api_token;
+        $this->thumbnail_path = $video->thumbnail_path . '/' . $imageToken;
+        $this->video_path = $video->video_path . '/' . $videoToken;
     }
 
     public function update()
@@ -84,11 +85,11 @@ class VideosLivewire extends Component
             'video_category_id' => 'required|int'
         ];
 
-        if(empty($this->thumbnail_path)) {
+        if (empty($this->thumbnail_path)) {
             $rules['thumbnail'] = "required|mimetypes:image/png,image/jpg,image/jpeg|max:16000|";
         }
 
-        if(empty($this->video_path)) {
+        if (empty($this->video_path)) {
             $rules['video'] = "required|mimetypes:video/mp4|max:1000000|";
         }
 
@@ -112,7 +113,7 @@ class VideosLivewire extends Component
             Storage::disk('private')->delete($this->video_path);
             $videoPath = $this->video->storeAs('videos', 'video--' . Str::random(50) . '.' . $this->video->getClientOriginalExtension(), 'private');
         }
-        
+
         $video->update([
             'title' => $validated['title'],
             'description' => $validated['description'],
